@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import AddThoughtForm from './components/AddThoughtForm';
+import Thought from './components/Thought';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [thoughts, setThoughts] = useState([]);
+
+  const addThought = thought => setThoughts(prev => [thought, ...prev]);
+
+  const removeThought = id => setThoughts(prev => prev.filter(thought => thought.id !== id));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className='App'>
+      <header>
+        <h1>Passing Thoughts</h1>
       </header>
+      <main>
+        <AddThoughtForm addThought={addThought} />
+        <ul className='thoughts'>
+          {thoughts.map(thought => (
+            <Thought key={thought.id} thought={thought} removeThought={removeThought} />
+          ))}
+        </ul>
+      </main>
     </div>
   );
-}
+};
 
 export default App;
